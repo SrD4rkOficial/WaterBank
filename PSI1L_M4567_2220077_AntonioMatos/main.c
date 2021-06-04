@@ -255,6 +255,7 @@ registomenu:
         if(mysql_fetch_row(res) != NULL)
         {
             printf("Username em utilização.\n");
+            mysql_free_result(res);
             sleep(3);
             goto registomenu;
         }
@@ -265,6 +266,9 @@ registomenu:
             printf("Query failed: %s\n", mysql_error(con));
             exit(0);
         }
+        printf("O registo foi efetuado com sucesso. A voltar ao menu...");
+        sleep(3);
+        goto principal;
         break;
     case 3:
         printf("+---------------+\n");
