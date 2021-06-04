@@ -1,0 +1,28 @@
+# depslib dependency file v1.0
+1622794228 source:f:\privado\projetopsi\main.c
+	<stdio.h>
+	<stdlib.h>
+	<Privado.h>
+	<mysql.h>
+	<time.h>
+
+1621336151 
+
+1622656347 source:g:\privado\projetopsi\main.c
+	<stdio.h>
+	<stdlib.h>
+	<Privado.h>
+	<mysql.h>
+	<time.h>
+
+1622385460 source:/media/srd4rkoficial/SrD4rkOficial/Privado/ProjetoPSI/main.c
+	<stdio.h>
+	<stdlib.h>
+	<Privado.h>
+	<mysql.h>
+	<time.h>
+
+1622543536 source:f:\privado\projetopsi\resources.rc
+
+1622543536 source:g:\privado\projetopsi\resources.rc
+
