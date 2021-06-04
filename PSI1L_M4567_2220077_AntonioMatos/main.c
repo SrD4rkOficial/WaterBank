@@ -29,6 +29,7 @@ struct mysqlvalues
     char query3[200];
     char query4[200];
     char query5[200];
+    char query6[200];
 };
 
 struct randomnum
@@ -234,13 +235,20 @@ menu:
         }
         break;
     case 2:
-        printf("+---------------+\n");
-        printf("| Menu do Login |\n");
-        printf("+---------------+\n");
+        cls();
+        printf("+-----------------+\n");
+        printf("| Menu do Registo |\n");
+        printf("+-----------------+\n");
         printf("| Username: ");
         scanf("%s",&registo.username);
         printf("| Password: ");
         scanf("%s",&registo.password);
+        sprintf(mysqlvalues.query6, "INSERT INTO contas (username, password) VALUES ('%s', '%s');", registo.username, registo.password);
+        if(mysql_query(con, mysqlvalues.query6))
+        {
+            printf("Query failed: %s\n", mysql_error(con));
+            exit(0);
+        }
         break;
     case 3:
         printf("+---------------+\n");
