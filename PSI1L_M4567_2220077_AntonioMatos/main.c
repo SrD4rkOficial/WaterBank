@@ -8,6 +8,7 @@ struct switches
 {
     int a;
     int b;
+    int c;
 };
 
 struct login
@@ -31,6 +32,7 @@ struct mysqlvalues
     char query5[200];
     char query6[200];
     char query7[200];
+    char query8[200];
 };
 
 struct randomnum
@@ -128,6 +130,8 @@ menu:
         printf("| 2 - Verificar dados/saldo conta bancária  |\n");
         printf("| 3 - Verificar dados cartão                |\n");
         printf("| 4 - Transferir dinheiro                   |\n");
+        printf("| 5 - Logout                                |\n");
+        printf("| 6 - Sair                                  |\n");
         printf("+-------------------------------------------+\n");
         printf("| Resposta: ");
         scanf("%i",&switches.b);
@@ -172,6 +176,7 @@ menu:
             printf("| CVC %s          Validade 2025   |\n", cvvchar);
             printf("+----------------------------------+\n");
             ///////////////////////////////////////////////////////////////////
+            sleep(5);
             int entidade1 = (rand() % (999 + 1 - 100)) + 100;
             sleep(5);
             int entidade2 = (rand() % (99 + 1 - 10)) + 10;
@@ -211,8 +216,7 @@ menu:
                 printf("Query failed: %s\n", mysql_error(con));
                 exit(0);
             }
-            printf("O seu cartão foi gerado com sucesso. A voltar ao menu...");
-            sleep(3);
+            pressanykey();
             goto menu;
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         case 2:
@@ -223,16 +227,100 @@ menu:
                 printf("Query failed: %s\n", mysql_error(con));
                 exit(0);
             }
-            res = mysql_fetch_row(con);
-            if(mysql_fetch_row(res) == NULL)
+            MYSQL_RES *res = mysql_use_result(con);
+            MYSQL_ROW row = mysql_fetch_row(res);
+            if(row[0] == NULL)
             {
                 erroexit();
             }
             printf("+---------------------------+\n");
             printf("|           IBAN            |\n");
             printf("+---------------------------+\n");
-            printf("| %s |\n", row[0]);
+            printf("| %s |\n", row[4]);
             printf("+---------------------------+\n");
+            printf("| %s\n", row[3]);
+            printf("+---------------------------+\n");
+            mysql_free_result(res);
+            pressanykey();
+            goto menu;
+            break;
+        case 3:
+            sprintf(mysqlvalues.query8, "SELECT * FROM `contas` WHERE Username = '%s';", login.username);
+            if(mysql_query(con, mysqlvalues.query8))
+            {
+                printf("Query failed: %s\n", mysql_error(con));
+                exit(0);
+            }
+            res = mysql_use_result(con);
+            row = mysql_fetch_row(res);
+            if(row[0] == NULL)
+            {
+                erroexit();
+            }
+            printf("+----------------------------------+\n");
+            printf("| Titular                          |\n");
+            printf("| %s\n", row[0]);
+            printf("|                                  |\n");
+            printf("| Nº Cartão %s       |\n", row[8]);
+            printf("|                                  |\n");
+            printf("| CVC %s          Validade 2025   |\n", row[9]);
+            printf("+----------------------------------+\n");
+            printf("\n");
+            printf("+----------------------------------+\n");
+            printf("| Entidade                         |\n");
+            printf("| %s                            |\n", row[6]);
+            printf("|                                  |\n");
+            printf("| Referência %s             |\n", row[7]);
+            printf("|                                  |\n");
+            printf("| Código %s                      |\n", row[5]);
+            printf("+----------------------------------+\n");
+            mysql_free_result(res);
+            pressanykey();
+            goto menu;
+            break;
+        case 4:
+            printf("+-------------------------------------------+\n");
+            printf("| Bem-vindo, escolha uma das opções abaixo. |\n");
+            printf("+-------------------------------------------+\n");
+            printf("| 1 - Transferir por entidade e referencia  |\n");
+            printf("| 2 - Transferir por IBan                   |\n");
+            printf("| 3 - Menu anterior                         |\n");
+            printf("| 4 - Sair                                  |\n");
+            printf("+-------------------------------------------+\n");
+            printf("| Resposta: ");
+            scanf("%i", &switches.c);
+            switch(switches.c)
+            {
+            case 3:
+                printf("A terminar sessão...");
+                sleep(3);
+                goto principal;
+                break;
+            case 4:
+                cls();
+                printf("A sair do programa...");
+                SetConsoleTitle("A sair do programa...");
+                sleep(3);
+                exit(0);
+                break;
+            default:
+                erroexit();
+            }
+            break;
+        case 5:
+            printf("A terminar sessão...");
+            sleep(3);
+            goto principal;
+            break;
+        case 6:
+            cls();
+            printf("A sair do programa...");
+            SetConsoleTitle("A sair do programa...");
+            sleep(3);
+            exit(0);
+            break;
+        default:
+            erroexit();
         }
         break;
     case 2:
@@ -271,6 +359,7 @@ registomenu:
         goto principal;
         break;
     case 3:
+        cls();
         printf("+---------------+\n");
         printf("|  Programador  |\n");
         printf("+---------------+\n");
