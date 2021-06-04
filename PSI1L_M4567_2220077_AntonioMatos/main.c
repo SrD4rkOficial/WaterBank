@@ -30,6 +30,7 @@ struct mysqlvalues
     char query4[200];
     char query5[200];
     char query6[200];
+    char query7[200];
 };
 
 struct randomnum
@@ -235,6 +236,7 @@ menu:
         }
         break;
     case 2:
+registomenu:
         cls();
         printf("+-----------------+\n");
         printf("| Menu do Registo |\n");
@@ -243,6 +245,20 @@ menu:
         scanf("%s",&registo.username);
         printf("| Password: ");
         scanf("%s",&registo.password);
+        sprintf(mysqlvalues.query7, "SELECT * FROM contas WHERE Username = '%s';", registo.username);
+        if(mysql_query(con, mysqlvalues.query7))
+        {
+            printf("Query failed: %s\n", mysql_error(con));
+            exit(0);
+        }
+        res = mysql_use_result(con);
+        if(mysql_fetch_row(res) != NULL)
+        {
+            printf("Username em utilização.\n");
+            sleep(3);
+            goto registomenu;
+        }
+        mysql_free_result(res);
         sprintf(mysqlvalues.query6, "INSERT INTO contas (username, password) VALUES ('%s', '%s');", registo.username, registo.password);
         if(mysql_query(con, mysqlvalues.query6))
         {
