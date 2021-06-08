@@ -295,6 +295,7 @@ menu:
             break;
         case 4:
 transferencias:
+            cls();
             printf("+-------------------------------------------+\n");
             printf("| Bem-vindo, escolha uma das opções abaixo. |\n");
             printf("+-------------------------------------------+\n");
@@ -305,43 +306,62 @@ transferencias:
             printf("+-------------------------------------------+\n");
             printf("| Resposta: ");
             scanf("%i", &switches.c);
+            fflush(stdin);
             switch(switches.c)
             {
             case 1:
                 cls();
                 printf("Insira a entidade a que deseja fazer uma transferência. (5 números)\n");
-                print("Entidade: ");
-                scanf("%s", &transferenciadata.entidade);
+                printf("Entidade: ");
+                gets(transferenciadata.entidade);
 
                 printf("\nInsira a referência a que deseja fazer uma transferência. (9 números)\n");
-                print("Referência: ");
-                scanf("%s", &transferenciadata.referencia);
+                printf("Referência: ");
+                gets(transferenciadata.referencia);
 
                 printf("\nInsira a quantidade em euros que deseja enviar.\n");
-                print("Quantidade: ");
+                printf("Quantidade: ");
                 scanf("%i", &transferenciadata.money);
-
-                sprintf(mysqlvalues.query9, "SELECT * FROM `contas` WHERE `Contas_referencia` = '%s' AND `Contas_entidade` = '%s';", transferenciadata.referencia, transferenciadata.entidade);
+                if(transferenciadata.money < 1)
+                {
+                    printf("A quantidade tem de ser acima de 1.");
+                    sleep(3);
+                    goto transferencias;
+                }
+                printf("Here");
+                sprintf(mysqlvalues.query9, "SELECT * FROM `contas` WHERE `Cartao_referencia` = '%s' AND `Cartao_entidade` = '%s';", transferenciadata.referencia, transferenciadata.entidade);
                 if(mysql_query(con, mysqlvalues.query9))
                 {
                     printf("Query failed: %s\n", mysql_error(con));
                     exit(0);
                 }
                 res = mysql_use_result(con);
+                printf("Here");
                 row = mysql_fetch_row(res);
+                printf("Here");
                 if(row[0] == NULL)
                 {
                     printf("O perfil inserido não foi encontrado. Tente novamente.\n");
                     sleep(3);
                     goto transferencias;
                 }
-
-                sprintf(mysqlvalues.query10, "UPDATE `contas` SET Cartao_solicitado = 1, Cartao_codigo = '%s', Cartao_entidade = '%s' WHERE Username = '%s';", codigocartaochar, entidade, login.username);
+                printf("Here");
+                if(row[2] < transferenciadata.money)
+                {
+                    printf("Não tem saldo suficiente para efetuar esta operação.\n");
+                    sleep(3);
+                    goto transferencias;
+                }
+                printf("Here");
+                sprintf(mysqlvalues.query10, "UPDATE `contas` SET Saldo = current+%i WHERE Cartao_entidade = '%s' AND Cartao_referencia = '%s';", transferenciadata.money, transferenciadata.entidade, transferenciadata.referencia);
                 if(mysql_query(con, mysqlvalues.query10))
                 {
                     printf("Query failed: %s\n", mysql_error(con));
                     exit(0);
                 }
+                printf("Dinheiro transferido com sucesso.");
+                pressanykey();
+                goto menu;
                 break;
             case 3:
                 printf("A terminar sessão...");
