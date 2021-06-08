@@ -23,6 +23,14 @@ struct registo
     char password[32];
 };
 
+struct transferenciadata
+{
+    char entidade[5];
+    char referencia[9];
+    char iban[25];
+    int money;
+};
+
 struct mysqlvalues
 {
     char query1[200];
@@ -33,6 +41,8 @@ struct mysqlvalues
     char query6[200];
     char query7[200];
     char query8[200];
+    char query9[200];
+    char query10[200];
 };
 
 struct randomnum
@@ -41,6 +51,7 @@ struct randomnum
     int upper;
 };
 
+struct transferenciadata transferenciadata;
 struct randomnum randomnum;
 struct login login;
 struct registo registo;
@@ -60,11 +71,15 @@ void finish_with_error(MYSQL *con)
 
 int main()
 {
+    FILE *ficheiro;
+    ficheiro = fopen("ficheiro.txt", "r+");
+    char host[30];
+    fscanf(ficheiro, "%s", &host);
     ////////////////////////////////////////
     MYSQL *con;
     MYSQL_RES *res;
     MYSQL_ROW row;
-    char *server = "192.168.56.1";
+    char *server = host;
     char *user = "root";
     char *pass = "5603";
     char *database = "psi";
@@ -279,6 +294,7 @@ menu:
             goto menu;
             break;
         case 4:
+transferencias:
             printf("+-------------------------------------------+\n");
             printf("| Bem-vindo, escolha uma das opções abaixo. |\n");
             printf("+-------------------------------------------+\n");
@@ -291,6 +307,42 @@ menu:
             scanf("%i", &switches.c);
             switch(switches.c)
             {
+            case 1:
+                cls();
+                printf("Insira a entidade a que deseja fazer uma transferência. (5 números)\n");
+                print("Entidade: ");
+                scanf("%s", &transferenciadata.entidade);
+
+                printf("\nInsira a referência a que deseja fazer uma transferência. (9 números)\n");
+                print("Referência: ");
+                scanf("%s", &transferenciadata.referencia);
+
+                printf("\nInsira a quantidade em euros que deseja enviar.\n");
+                print("Quantidade: ");
+                scanf("%i", &transferenciadata.money);
+
+                sprintf(mysqlvalues.query9, "SELECT * FROM `contas` WHERE `Contas_referencia` = '%s' AND `Contas_entidade` = '%s';", transferenciadata.referencia, transferenciadata.entidade);
+                if(mysql_query(con, mysqlvalues.query9))
+                {
+                    printf("Query failed: %s\n", mysql_error(con));
+                    exit(0);
+                }
+                res = mysql_use_result(con);
+                row = mysql_fetch_row(res);
+                if(row[0] == NULL)
+                {
+                    printf("O perfil inserido não foi encontrado. Tente novamente.\n");
+                    sleep(3);
+                    goto transferencias;
+                }
+
+                sprintf(mysqlvalues.query10, "UPDATE `contas` SET Cartao_solicitado = 1, Cartao_codigo = '%s', Cartao_entidade = '%s' WHERE Username = '%s';", codigocartaochar, entidade, login.username);
+                if(mysql_query(con, mysqlvalues.query10))
+                {
+                    printf("Query failed: %s\n", mysql_error(con));
+                    exit(0);
+                }
+                break;
             case 3:
                 printf("A terminar sessão...");
                 sleep(3);
