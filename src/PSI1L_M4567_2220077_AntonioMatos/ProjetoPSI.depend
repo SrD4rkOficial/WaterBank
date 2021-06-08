@@ -46,3 +46,10 @@
 
 1623185708 source:c:\users\srd4rkoficial\desktop\psi1l_m4567_2220077_antoniomatos\src\psi1l_m4567_2220077_antoniomatos\resources.rc
 
+1623189863 source:c:\users\srd4rkoficial\desktop\psi1l_m4567_2220077_antoniomatos\src\psi1l_m4567_2220077_antoniomatos\main.c
+	<stdio.h>
+	<stdlib.h>
+	<Privado.h>
+	<mysql.h>
+	<time.h>
+

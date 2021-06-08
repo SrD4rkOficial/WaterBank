@@ -43,6 +43,7 @@ struct mysqlvalues
     char query8[200];
     char query9[200];
     char query10[200];
+    char query11[200];
 };
 
 struct randomnum
@@ -195,7 +196,7 @@ menu:
             int entidade1 = (rand() % (999 + 1 - 100)) + 100;
             sleep(5);
             int entidade2 = (rand() % (99 + 1 - 10)) + 10;
-            char entidade[20];
+            char entidade[5];
             sprintf(entidade, "%i%i", entidade1, entidade2);
             ////////////////////////////////////////////////////////////////////
             int referencia1 = (rand() % (99999 + 1 - 10000)) + 10000;
@@ -251,15 +252,29 @@ menu:
             printf("+---------------------------+\n");
             printf("|           IBAN            |\n");
             printf("+---------------------------+\n");
-            printf("| %s |\n", row[4]);
+            printf("| %s |\n", row[3]);
             printf("+---------------------------+\n");
-            printf("| %s\n", row[3]);
+            printf("| %s$\n", row[2]);
             printf("+---------------------------+\n");
             mysql_free_result(res);
             pressanykey();
             goto menu;
             break;
         case 3:
+            sprintf(mysqlvalues.query11, "SELECT * FROM `contas` WHERE `username` = '%s' AND `Cartao_solicitado` = 1;", login.username);
+            if(mysql_query(con, mysqlvalues.query11))
+            {
+                printf("Query failed: %s\n", mysql_error(con));
+                exit(0);
+            }
+            res = mysql_use_result(con);
+            if(mysql_fetch_row(res) == NULL)
+            {
+                printf("O seu cartão ainda não foi solicitado.\n");
+                sleep(3);
+                goto menu;
+            }
+            mysql_free_result(res);
             sprintf(mysqlvalues.query8, "SELECT * FROM `contas` WHERE Username = '%s';", login.username);
             if(mysql_query(con, mysqlvalues.query8))
             {
@@ -339,7 +354,7 @@ transferencias:
                 printf("Here");
                 row = mysql_fetch_row(res);
                 printf("Here");
-                if(row[0] == NULL)
+                if(row == NULL)
                 {
                     printf("O perfil inserido não foi encontrado. Tente novamente.\n");
                     sleep(3);
@@ -364,9 +379,7 @@ transferencias:
                 goto menu;
                 break;
             case 3:
-                printf("A terminar sessão...");
-                sleep(3);
-                goto principal;
+                goto menu;
                 break;
             case 4:
                 cls();
