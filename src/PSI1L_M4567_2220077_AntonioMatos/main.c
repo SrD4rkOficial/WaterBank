@@ -25,8 +25,8 @@ struct registo
 
 struct transferenciadata
 {
-    char entidade[5];
-    char referencia[9];
+    int entidade;
+    int referencia;
     char iban[25];
     int money;
 };
@@ -181,13 +181,11 @@ menu:
             int cvv = (rand() % (999 + 1 - 100)) + 100;
             char cvvchar[5];
             sprintf(cvvchar, "%i", cvv);
-            char cartao[16];
-            sprintf(cartao, "%i%i%i%i", cartao1, cartao2, cartao3, cartao4);
             printf("+----------------------------------+\n");
             printf("| Titular                          |\n");
             printf("| %s\n", login.username);
             printf("|                                  |\n");
-            printf("| Nº Cartão %s       |\n", cartao);
+            printf("| Nº Cartão %i%i%i%i       |\n", cartao1, cartao2, cartao3, cartao4);
             printf("|                                  |\n");
             printf("| CVC %s          Validade 2025   |\n", cvvchar);
             printf("+----------------------------------+\n");
@@ -196,8 +194,6 @@ menu:
             int entidade1 = (rand() % (999 + 1 - 100)) + 100;
             sleep(5);
             int entidade2 = (rand() % (99 + 1 - 10)) + 10;
-            char entidade[5];
-            sprintf(entidade, "%i%i", entidade1, entidade2);
             ////////////////////////////////////////////////////////////////////
             int referencia1 = (rand() % (99999 + 1 - 10000)) + 10000;
             sleep(5);
@@ -214,19 +210,19 @@ menu:
             printf("\n");
             printf("+----------------------------------+\n");
             printf("| Entidade                         |\n");
-            printf("| %s                            |\n", entidade);
+            printf("| %i%i                            |\n", entidade1, entidade2);
             printf("|                                  |\n");
             printf("| Referência %s             |\n", referencia1char);
             printf("|                                  |\n");
             printf("| Código %s                      |\n", codigocartaochar);
             printf("+----------------------------------+\n");
-            sprintf(mysqlvalues.query3, "UPDATE `contas` SET Cartao_solicitado = 1, Cartao_codigo = '%s', Cartao_entidade = '%s' WHERE Username = '%s';", codigocartaochar, entidade, login.username);
+            sprintf(mysqlvalues.query3, "UPDATE `contas` SET Cartao_solicitado = 1, Cartao_codigo = '%s', Cartao_entidade = '%i%i' WHERE Username = '%s';", codigocartaochar, entidade1, entidade2, login.username);
             if(mysql_query(con, mysqlvalues.query3))
             {
                 printf("Query failed: %s\n", mysql_error(con));
                 exit(0);
             }
-            sprintf(mysqlvalues.query4, "UPDATE `contas` SET Cartao_referencia = '%s', Cartao_numero = '%s', Cartao_ccv = '%s' WHERE Username = '%s';", referencia1char, cartao, cvvchar, login.username);
+            sprintf(mysqlvalues.query4, "UPDATE `contas` SET Cartao_referencia = '%s', Cartao_numero = '%i%i%i%i', Cartao_ccv = '%s' WHERE Username = '%s';", referencia1char, cartao1, cartao2, cartao3, cartao4, cvvchar, login.username);
             if(mysql_query(con, mysqlvalues.query4))
             {
                 printf("Query failed: %s\n", mysql_error(con));
@@ -328,32 +324,35 @@ transferencias:
                 cls();
                 printf("Insira a entidade a que deseja fazer uma transferência. (5 números)\n");
                 printf("Entidade: ");
-                gets(transferenciadata.entidade);
+                scanf("%i", &transferenciadata.entidade);
 
                 printf("\nInsira a referência a que deseja fazer uma transferência. (9 números)\n");
                 printf("Referência: ");
-                gets(transferenciadata.referencia);
+                scanf("%i", &transferenciadata.referencia);
 
                 printf("\nInsira a quantidade em euros que deseja enviar.\n");
                 printf("Quantidade: ");
                 scanf("%i", &transferenciadata.money);
+                printf("1\n");
                 if(transferenciadata.money < 1)
                 {
                     printf("A quantidade tem de ser acima de 1.");
                     sleep(3);
                     goto transferencias;
                 }
-                printf("Here");
-                sprintf(mysqlvalues.query9, "SELECT * FROM `contas` WHERE `Cartao_referencia` = '%s' AND `Cartao_entidade` = '%s';", transferenciadata.referencia, transferenciadata.entidade);
+                printf("1\n");
+                printf(transferenciadata.referencia);
+                printf("1\n");
+                printf("\n");
+                printf(transferenciadata.entidade);
+                sprintf(mysqlvalues.query9, "SELECT * FROM `contas` WHERE `Cartao_referencia` = '%i' AND `Cartao_entidade` = '%i';", transferenciadata.referencia, transferenciadata.entidade);
                 if(mysql_query(con, mysqlvalues.query9))
                 {
                     printf("Query failed: %s\n", mysql_error(con));
                     exit(0);
                 }
                 res = mysql_use_result(con);
-                printf("Here");
                 row = mysql_fetch_row(res);
-                printf("Here");
                 if(row == NULL)
                 {
                     printf("O perfil inserido não foi encontrado. Tente novamente.\n");

@@ -1,5 +1,5 @@
 -- --------------------------------------------------------
--- Anfitrião:                    192.168.56.1
+-- Anfitrião:                    localhost
 -- Versão do servidor:           10.4.19-MariaDB - mariadb.org binary distribution
 -- Server OS:                    Win64
 -- HeidiSQL Versão:              11.2.0.6213
@@ -37,22 +37,22 @@ DROP TABLE IF EXISTS `contas`;
 CREATE TABLE IF NOT EXISTS `contas` (
   `Username` text NOT NULL,
   `Password` text NOT NULL,
+  `Saldo` int(10) unsigned NOT NULL DEFAULT 0,
   `IBan` text DEFAULT NULL,
   `Cartao_solicitado` int(1) NOT NULL DEFAULT 0,
-  `Cartao_ativo` int(1) NOT NULL DEFAULT 0,
-  `Cartao_codigo` int(1) DEFAULT NULL,
-  `Cartao_entidade` int(5) DEFAULT NULL,
-  `Cartao_referencia` int(9) DEFAULT NULL,
-  `Cartao_numero` int(16) DEFAULT NULL,
-  `Cartao_validade` int(5) DEFAULT NULL,
-  `Cartao_ccv` int(3) DEFAULT NULL
+  `Cartao_codigo` text DEFAULT NULL,
+  `Cartao_entidade` text DEFAULT NULL,
+  `Cartao_referencia` text DEFAULT NULL,
+  `Cartao_numero` varchar(16) DEFAULT NULL,
+  `Cartao_ccv` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- Dumping data for table psi.contas: ~1 rows (approximately)
+-- Dumping data for table psi.contas: ~0 rows (approximately)
 DELETE FROM `contas`;
 /*!40000 ALTER TABLE `contas` DISABLE KEYS */;
-INSERT INTO `contas` (`Username`, `Password`, `IBan`, `Cartao_solicitado`, `Cartao_ativo`, `Cartao_codigo`, `Cartao_entidade`, `Cartao_referencia`, `Cartao_numero`, `Cartao_validade`, `Cartao_ccv`) VALUES
-	('srd4rk', '123', NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `contas` (`Username`, `Password`, `Saldo`, `IBan`, `Cartao_solicitado`, `Cartao_codigo`, `Cartao_entidade`, `Cartao_referencia`, `Cartao_numero`, `Cartao_ccv`) VALUES
+	('admin', 'admin', 0, 'PT12345678901234567890123', 1, '1658', '99028', '361254526', '5112608485802103', '808'),
+	('1', '2', 0, NULL, 0, NULL, '123', '21321', NULL, NULL);
 /*!40000 ALTER TABLE `contas` ENABLE KEYS */;
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
