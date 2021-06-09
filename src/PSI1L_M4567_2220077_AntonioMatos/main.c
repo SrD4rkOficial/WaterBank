@@ -300,18 +300,18 @@ menu:
             printf("| Titular                          |\n");
             printf("| %s\n", row[0]);
             printf("|                                  |\n");
-            printf("| Nº Cartão %s       |\n", row[8]);
+            printf("| Nº Cartão %s       |\n", row[9]);
             printf("|                                  |\n");
-            printf("| CVC %s          Validade 2025   |\n", row[9]);
+            printf("| CVC %s          Validade 2025   |\n", row[10]);
             printf("+----------------------------------+\n");
             printf("\n");
             printf("+----------------------------------+\n");
             printf("| Entidade                         |\n");
-            printf("| %s                            |\n", row[6]);
+            printf("| %s                            |\n", row[7]);
             printf("|                                  |\n");
-            printf("| Referência %s             |\n", row[7]);
+            printf("| Referência %s             |\n", row[8]);
             printf("|                                  |\n");
-            printf("| Código %s                      |\n", row[5]);
+            printf("| Código %s                      |\n", row[6]);
             printf("+----------------------------------+\n");
             mysql_free_result(res);
             pressanykey();
@@ -694,6 +694,7 @@ registomenu:
         scanf("%s",&registo.username);
         printf("| Password: ");
         scanf("%s",&registo.password);
+        printf("A inserir a suas informações na base de dados. Aguarde alguns segundos...");
         sprintf(mysqlvalues.query7, "SELECT * FROM contas WHERE Username = '%s';", registo.username);
         if(mysql_query(con, mysqlvalues.query7))
         {
@@ -709,7 +710,13 @@ registomenu:
             goto registomenu;
         }
         mysql_free_result(res);
-        sprintf(mysqlvalues.query6, "INSERT INTO contas (username, password) VALUES ('%s', '%s');", registo.username, registo.password);
+        int iban[4];
+        for(int i = 0; i < 5; i++) {
+            iban[i] = (rand() % (9999 + 1 - 1000)) + 1000;
+            sleep(5);
+        }
+        int iban1 = (rand() % (999 + 1 - 100)) + 100;
+        sprintf(mysqlvalues.query6, "INSERT INTO contas (username, password, iban) VALUES ('%s', '%s', 'PT%i%i%i%i%i%i');", registo.username, registo.password, iban[0], iban[1], iban[2], iban[3], iban[4], iban1);
         if(mysql_query(con, mysqlvalues.query6))
         {
             printf("Query failed: %s\n", mysql_error(con));
