@@ -9,6 +9,8 @@ struct switches
     int a;
     int b;
     int c;
+    int d;
+    int e;
 };
 
 struct login
@@ -52,16 +54,16 @@ struct mysqlvalues
     char query17[200];
     char query18[200];
     char query19[200];
-};
-
-struct randomnum
-{
-    int lower;
-    int upper;
+    char query20[200];
+    char query21[200];
+    char query22[200];
+    char query23[200];
+    char query24[200];
+    char query25[200];
+    char query26[200];
 };
 
 struct transferenciadata transferenciadata;
-struct randomnum randomnum;
 struct login login;
 struct registo registo;
 struct mysqlvalues mysqlvalues;
@@ -493,8 +495,191 @@ transferencias:
                 goto menu;
             }
             mysql_free_result(res);
-            printf("5");
-            break;
+admin:
+            printf("+---------------------------+\n");
+            printf("|   Menu de Administrador   |\n");
+            printf("+---------------------------+\n");
+            printf("| 1 - Gerir utilizadores    |\n");
+            printf("| 2 - Gerir administradores |\n");
+            printf("| 3 - Voltar ao menu        |\n");
+            printf("| 4 - Terminar Sessão       |\n");
+            printf("| 5 - Sair do programa      |\n");
+            printf("+---------------------------+\n");
+            printf("| Resposta: ");
+            scanf("%i", &switches.d);
+            switch(switches.d)
+            {
+            case 1:
+                printf("+---------------------------------+\n");
+                printf("|     Gestão de utilizadores      |\n");
+                printf("+---------------------------------+\n");
+                printf("| 1 - Apagar utilizador           |\n");
+                printf("| 2 - Alterar senha de utilizador |\n");
+                printf("| 3 - Voltar atrás                |\n");
+                printf("+---------------------------------+\n");
+                printf("| Resposta: ");
+                scanf("%i", &switches.e);
+                switch(switches.e)
+                {
+                case 1:
+deleteuser:
+                    printf("Insira o nome do utilizador que deseja apagar.\n");
+                    char nome[20];
+                    gets(nome);
+                    sprintf(mysqlvalues.query19, "SELECT * FROM contas WHERE username = '%s';", nome);
+                    if(mysql_query(con, mysqlvalues.query19))
+                    {
+                        printf("Query failed: %s\n", mysql_error(con));
+                        exit(0);
+                    }
+                    res = mysql_use_result(con);
+                    if(mysql_fetch_row(res) == NULL)
+                    {
+                        printf("Utilizador não encontrado.\n");
+                        sleep(3);
+                        goto deleteuser;
+                    }
+                    mysql_free_result(res);
+                    sprintf(mysqlvalues.query20, "DELETE FROM Contas WHERE username = '%s';", nome);
+                    if(mysql_query(con, mysqlvalues.query20))
+                    {
+                        printf("Query failed: %s\n", mysql_error(con));
+                        exit(0);
+                    }
+                    printf("Utilizador eliminado com sucesso.\n");
+                    mysql_free_result(res);
+                    sleep(3);
+                    goto admin;
+                    break;
+                case 2:
+changepassuser:
+                    printf("Insira o utilizador que deseja alterar a senha.");
+                    char nomecpu[20];
+                    gets(nomecpu);
+                    sprintf(mysqlvalues.query21, "SELECT * FROM contas WHERE username = '%s';", nomecpu);
+                    if(mysql_query(con, mysqlvalues.query21))
+                    {
+                        printf("Query failed: %s\n", mysql_error(con));
+                        exit(0);
+                    }
+                    res = mysql_use_result(con);
+                    if(mysql_fetch_row(res) == NULL)
+                    {
+                        printf("Utilizador não encontrado.\n");
+                        sleep(3);
+                        goto changepassuser;
+                    }
+                    mysql_free_result(res);
+                    printf("Insira a nova senha.\n");
+                    char password[20];
+                    gets(password);
+                    sprintf(mysqlvalues.query22, "UPDATE `contas` SET Password = '%s' WHERE Username = '%s';", password, nomecpu);
+                    if(mysql_query(con, mysqlvalues.query22))
+                    {
+                        printf("Query failed: %s\n", mysql_error(con));
+                        exit(0);
+                    }
+                    printf("A senha foi alterada com sucesso.\n");
+                    pressanykey();
+                    goto admin;
+                    break;
+                case 3:
+                    goto admin;
+                    break;
+                default:
+                    erroexit();
+                }
+                break;
+            case 2:
+changeusergroup:
+                printf("Insira o utilizador que deseja alterar.\n");
+                char user[20];
+                gets(user);
+                sprintf(mysqlvalues.query23, "SELECT * FROM contas WHERE username = '%s';", user);
+                if(mysql_query(con, mysqlvalues.query23))
+                {
+                    printf("Query failed: %s\n", mysql_error(con));
+                    exit(0);
+                }
+                res = mysql_use_result(con);
+                if(mysql_fetch_row(res) == NULL)
+                {
+                    printf("Utilizador não encontrado.\n");
+                    sleep(3);
+                    goto changeusergroup;
+                }
+                mysql_free_result(res);
+
+                sprintf(mysqlvalues.query24, "SELECT * FROM contas WHERE username = '%s' AND Grupo = 1;", user);
+                if(mysql_query(con, mysqlvalues.query24))
+                {
+                    printf("Query failed: %s\n", mysql_error(con));
+                    exit(0);
+                }
+                res = mysql_use_result(con);
+                if(mysql_fetch_row(res) == NULL)
+                {
+                    printf("O utilizador inserido será promovido para administrador.\n");
+                    printf("Tem a certeza? (Y/N)\n");
+                    char certeza = getch();
+                    if(strcmp(certeza, "S") == 0)
+                    {
+                        sprintf(mysqlvalues.query25, "UPDATE `contas` SET Grupo = 1 WHERE Username = '%s';", user);
+                        if(mysql_query(con, mysqlvalues.query25))
+                        {
+                            printf("Query failed: %s\n", mysql_error(con));
+                            exit(0);
+                        }
+                        printf("O utilizador foi promovido para administrador com sucesso.\n");
+                        sleep(3);
+                        goto admin;
+                    }
+                    else
+                    {
+                        goto admin;
+                    }
+                }
+                else
+                {
+                    printf("O utilizador inserido será rebaixado para membro.\n");
+                    printf("Tem a certeza? (Y/N)\n");
+                    char certeza = getch();
+                    if(strcmp(certeza, "S") == 0)
+                    {
+                        sprintf(mysqlvalues.query25, "UPDATE `contas` SET Grupo = 0 WHERE Username = '%s';", user);
+                        if(mysql_query(con, mysqlvalues.query25))
+                        {
+                            printf("Query failed: %s\n", mysql_error(con));
+                            exit(0);
+                        }
+                        printf("O utilizador foi rebaixado para membro com sucesso.\n");
+                        sleep(3);
+                        goto admin;
+                    }
+                    else
+                    {
+                        goto admin;
+                    }
+                }
+                mysql_free_result(res);
+            case 3:
+                goto menu;
+                break;
+            case 4:
+                printf("A terminar sessão...");
+                sleep(3);
+                goto principal;
+                break;
+            case 5:
+                cls();
+                printf("A sair do programa...");
+                SetConsoleTitle("A sair do programa...");
+                sleep(3);
+                exit(0);
+                break;
+            default:
+                erroexit();
+            }
         default:
             erroexit();
         }
