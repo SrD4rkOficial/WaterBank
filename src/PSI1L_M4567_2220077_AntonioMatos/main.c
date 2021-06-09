@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <Privado.h>
+#include "Privado.h"
 #include <mysql.h>
 #include <time.h>
 
@@ -496,6 +496,7 @@ transferencias:
             }
             mysql_free_result(res);
 admin:
+            cls();
             printf("+---------------------------+\n");
             printf("|   Menu de Administrador   |\n");
             printf("+---------------------------+\n");
@@ -507,9 +508,11 @@ admin:
             printf("+---------------------------+\n");
             printf("| Resposta: ");
             scanf("%i", &switches.d);
+            fflush(stdin);
             switch(switches.d)
             {
             case 1:
+                cls();
                 printf("+---------------------------------+\n");
                 printf("|     Gestão de utilizadores      |\n");
                 printf("+---------------------------------+\n");
@@ -519,6 +522,7 @@ admin:
                 printf("+---------------------------------+\n");
                 printf("| Resposta: ");
                 scanf("%i", &switches.e);
+                fflush(stdin);
                 switch(switches.e)
                 {
                 case 1:
@@ -540,20 +544,19 @@ deleteuser:
                         goto deleteuser;
                     }
                     mysql_free_result(res);
-                    sprintf(mysqlvalues.query20, "DELETE FROM Contas WHERE username = '%s';", nome);
+                    sprintf(mysqlvalues.query20, "DELETE FROM contas WHERE username = '%s';", nome);
                     if(mysql_query(con, mysqlvalues.query20))
                     {
                         printf("Query failed: %s\n", mysql_error(con));
                         exit(0);
                     }
                     printf("Utilizador eliminado com sucesso.\n");
-                    mysql_free_result(res);
                     sleep(3);
                     goto admin;
                     break;
                 case 2:
 changepassuser:
-                    printf("Insira o utilizador que deseja alterar a senha.");
+                    printf("Insira o utilizador que deseja alterar a senha.\n");
                     char nomecpu[20];
                     gets(nomecpu);
                     sprintf(mysqlvalues.query21, "SELECT * FROM contas WHERE username = '%s';", nomecpu);
@@ -592,6 +595,7 @@ changepassuser:
                 break;
             case 2:
 changeusergroup:
+                fflush(stdin);
                 printf("Insira o utilizador que deseja alterar.\n");
                 char user[20];
                 gets(user);
@@ -619,47 +623,28 @@ changeusergroup:
                 res = mysql_use_result(con);
                 if(mysql_fetch_row(res) == NULL)
                 {
-                    printf("O utilizador inserido será promovido para administrador.\n");
-                    printf("Tem a certeza? (Y/N)\n");
-                    char certeza = getch();
-                    if(strcmp(certeza, "S") == 0)
+                    sprintf(mysqlvalues.query25, "UPDATE `contas` SET Grupo = 1 WHERE Username = '%s';", user);
+                    if(mysql_query(con, mysqlvalues.query25))
                     {
-                        sprintf(mysqlvalues.query25, "UPDATE `contas` SET Grupo = 1 WHERE Username = '%s';", user);
-                        if(mysql_query(con, mysqlvalues.query25))
-                        {
-                            printf("Query failed: %s\n", mysql_error(con));
-                            exit(0);
-                        }
-                        printf("O utilizador foi promovido para administrador com sucesso.\n");
-                        sleep(3);
-                        goto admin;
+                        printf("Query failed: %s\n", mysql_error(con));
+                        exit(0);
                     }
-                    else
-                    {
-                        goto admin;
-                    }
+                    printf("O utilizador foi promovido para administrador com sucesso.\n");
+                    sleep(3);
+                    goto admin;
                 }
                 else
                 {
-                    printf("O utilizador inserido será rebaixado para membro.\n");
-                    printf("Tem a certeza? (Y/N)\n");
-                    char certeza = getch();
-                    if(strcmp(certeza, "S") == 0)
+                    mysql_free_result(res);
+                    sprintf(mysqlvalues.query25, "UPDATE `contas` SET Grupo = 0 WHERE Username = '%s';", user);
+                    if(mysql_query(con, mysqlvalues.query25))
                     {
-                        sprintf(mysqlvalues.query25, "UPDATE `contas` SET Grupo = 0 WHERE Username = '%s';", user);
-                        if(mysql_query(con, mysqlvalues.query25))
-                        {
-                            printf("Query failed: %s\n", mysql_error(con));
-                            exit(0);
-                        }
-                        printf("O utilizador foi rebaixado para membro com sucesso.\n");
-                        sleep(3);
-                        goto admin;
+                        printf("Query failed: %s\n", mysql_error(con));
+                        exit(0);
                     }
-                    else
-                    {
-                        goto admin;
-                    }
+                    printf("O utilizador foi rebaixado para membro com sucesso.\n");
+                    sleep(3);
+                    goto admin;
                 }
                 mysql_free_result(res);
             case 3:
@@ -711,7 +696,8 @@ registomenu:
         }
         mysql_free_result(res);
         int iban[4];
-        for(int i = 0; i < 5; i++) {
+        for(int i = 0; i < 5; i++)
+        {
             iban[i] = (rand() % (9999 + 1 - 1000)) + 1000;
             sleep(5);
         }
