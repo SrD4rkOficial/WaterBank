@@ -50,6 +50,8 @@ struct mysqlvalues
     char query15[200];
     char query16[200];
     char query17[200];
+    char query18[200];
+    char query19[200];
 };
 
 struct randomnum
@@ -136,6 +138,13 @@ login:
         mysql_free_result(res);
 menu:
         cls();
+        sprintf(mysqlvalues.query18, "SELECT * FROM contas WHERE username = '%s' AND Grupo = 1", login.username);
+        if(mysql_query(con, mysqlvalues.query18))
+        {
+            printf("Query failed: %s\n", mysql_error(con));
+            exit(0);
+        }
+        res = mysql_use_result(con);
         printf("+-------------------------------------------+\n");
         printf("| Bem-vindo, escolha uma das opções abaixo. |\n");
         printf("+-------------------------------------------+\n");
@@ -145,9 +154,14 @@ menu:
         printf("| 4 - Transferir dinheiro                   |\n");
         printf("| 5 - Logout                                |\n");
         printf("| 6 - Sair                                  |\n");
+        if(mysql_fetch_row(res) != NULL)
+        {
+            printf("| 7 - Admin menu                            |\n");
+        }
         printf("+-------------------------------------------+\n");
         printf("| Resposta: ");
         scanf("%i",&switches.b);
+        mysql_free_result(res);
         switch(switches.b)
         {
         case 1:
@@ -463,6 +477,23 @@ transferencias:
             SetConsoleTitle("A sair do programa...");
             sleep(3);
             exit(0);
+            break;
+        case 7:
+            sprintf(mysqlvalues.query19, "SELECT * FROM contas WHERE username = '%s' AND Grupo = 1", login.username);
+            if(mysql_query(con, mysqlvalues.query19))
+            {
+                printf("Query failed: %s\n", mysql_error(con));
+                exit(0);
+            }
+            res = mysql_use_result(con);
+            if(mysql_fetch_row(res) == NULL)
+            {
+                printf("O utilizador não tem permissão para acessar este menu.");
+                sleep(3);
+                goto menu;
+            }
+            mysql_free_result(res);
+            printf("5");
             break;
         default:
             erroexit();
