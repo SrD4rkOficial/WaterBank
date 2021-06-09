@@ -1,7 +1,7 @@
 -- --------------------------------------------------------
--- Anfitrião:                    localhost
--- Versão do servidor:           8.0.25 - MySQL Community Server - GPL
--- Server OS:                    Win64
+-- Anfitrião:                    68.183.69.193
+-- Versão do servidor:           8.0.25-0ubuntu0.21.04.1 - (Ubuntu)
+-- Server OS:                    Linux
 -- HeidiSQL Versão:              11.2.0.6213
 -- --------------------------------------------------------
 
@@ -17,20 +17,6 @@
 DROP DATABASE IF EXISTS `psi`;
 CREATE DATABASE IF NOT EXISTS `psi` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
 USE `psi`;
-
--- Dumping structure for table psi.cartoes_pre_pagos
-DROP TABLE IF EXISTS `cartoes_pre_pagos`;
-CREATE TABLE IF NOT EXISTS `cartoes_pre_pagos` (
-  `Titular` text,
-  `Numero_do_cartao` int NOT NULL,
-  `Validade` int NOT NULL,
-  `CCV` int NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
--- Dumping data for table psi.cartoes_pre_pagos: ~0 rows (approximately)
-DELETE FROM `cartoes_pre_pagos`;
-/*!40000 ALTER TABLE `cartoes_pre_pagos` DISABLE KEYS */;
-/*!40000 ALTER TABLE `cartoes_pre_pagos` ENABLE KEYS */;
 
 -- Dumping structure for table psi.contas
 DROP TABLE IF EXISTS `contas`;
@@ -52,8 +38,7 @@ CREATE TABLE IF NOT EXISTS `contas` (
 DELETE FROM `contas`;
 /*!40000 ALTER TABLE `contas` DISABLE KEYS */;
 INSERT INTO `contas` (`Username`, `Password`, `Saldo`, `IBan`, `Grupo`, `Cartao_solicitado`, `Cartao_codigo`, `Cartao_entidade`, `Cartao_referencia`, `Cartao_numero`, `Cartao_ccv`) VALUES
-	('admin', 'admin', 0, 'PT12345678901234567890123', 1, 1, '2907', '53825', '378673902', '7152804730219570', '371'),
-	('Teste', '1234', 18, '', 0, 1, '3394', '31945', '206092122', '7756665473254835', '823');
+	('admin', 'admin', 1000, 'PT12345678901234567890123', 1, 1, '2907', '53825', '378673902', '7152804730219570', '371');
 /*!40000 ALTER TABLE `contas` ENABLE KEYS */;
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
