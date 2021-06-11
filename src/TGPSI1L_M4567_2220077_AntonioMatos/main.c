@@ -319,6 +319,7 @@ menu:
             break;
         case 4:
 transferencias:
+            mysql_free_result(res);
             cls();
             printf("+-------------------------------------------+\n");
             printf("| Bem-vindo, escolha uma das opções abaixo. |\n");

@@ -62,3 +62,23 @@
 	<mysql.h>
 	<time.h>
 
+1623397493 source:c:\users\2220077\desktop\psi1l_m4567_2220077_antoniomatos\src\tgpsi1l_m4567_2220077_antoniomatos\main.c
+	<stdio.h>
+	<stdlib.h>
+	"Privado.h"
+	<mysql.h>
+	<time.h>
+
+1623397493 c:\users\2220077\desktop\psi1l_m4567_2220077_antoniomatos\src\tgpsi1l_m4567_2220077_antoniomatos\privado.h
+	<stdlib.h>
+	<stdio.h>
+	<windows.h>
+	<math.h>
+	<string.h>
+	<locale.h>
+	<stddef.h>
+	<stdbool.h>
+	<mysql.h>
+
+1623397494 source:c:\users\2220077\desktop\psi1l_m4567_2220077_antoniomatos\src\tgpsi1l_m4567_2220077_antoniomatos\resources.rc
+
