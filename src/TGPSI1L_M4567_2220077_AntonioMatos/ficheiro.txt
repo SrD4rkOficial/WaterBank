@@ -1,2 +1,2 @@
-localhost
 68.183.69.193
+localhost

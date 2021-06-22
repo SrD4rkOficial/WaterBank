@@ -73,6 +73,9 @@ struct switches switches;
 
 int main()
 {
+    cls();
+    printf(Amarelo);
+    loadingfunc();
     FILE *ficheiro;
     ficheiro = fopen("ficheiro.txt", "r+");
     char host[30];
@@ -83,7 +86,8 @@ int main()
     MYSQL_ROW row;
     char *server = host;
     char *user = "root";
-    char *pass = "5603";
+    // char *pass = "5603";
+    char *pass = "1589227704";
     char *database = "psi";
     con = mysql_init(NULL);
     if(!mysql_real_connect(con, server, user, pass, database, 0, NULL, 0))
@@ -93,22 +97,21 @@ int main()
     ////////////////////////////////////////
     idioma();
     fullscreen();
-    loadingfunc();
     cls();
     title("Waterbank");
     printf("+-------------------------+\n");
-    printf("| Bem-vindo ao WaterBank. |\n");
+    printf("| " Ciano "Bem-vindo ao WaterBank." Amarelo " |\n");
     printf("+-------------------------+\n");
     sleep(5);
 principal:
     cls();
     printf("+-------------------------------------+\n");
-    printf("| Escolha umas das opções abaixo.     |\n");
+    printf("| " Vermelho "  Escolha umas das opções abaixo. " Amarelo "  |\n");
     printf("+-------------------------------------+\n");
-    printf("| 1 - Login                           |\n");
-    printf("| 2 - Registro                        |\n");
-    printf("| 3 - Créditos                        |\n");
-    printf("| 4 - Sair                            |\n");
+    printf("| "Ciano"1 "Amarelo"- "Ciano"Login"Amarelo"                           |\n");
+    printf("| "Ciano"2 "Amarelo"- "Ciano"Registro"Amarelo"                        |\n");
+    printf("| "Ciano"3 "Amarelo"- "Ciano"Créditos"Amarelo"                        |\n");
+    printf("| "Ciano"4 "Amarelo"- "Ciano"Sair"Amarelo"                            |\n");
     printf("+-------------------------------------+\n");
     printf("| Resposta: ");
     scanf("%i",&switches.a);
@@ -118,7 +121,7 @@ principal:
 login:
         cls();
         printf("+---------------+\n");
-        printf("| Menu do Login |\n");
+        printf("| " Vermelho "Menu do Login" Amarelo " |\n");
         printf("+---------------+\n");
         printf("| Username: ");
         scanf("%s",&login.username);
