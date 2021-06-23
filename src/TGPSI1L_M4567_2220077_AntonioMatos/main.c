@@ -108,12 +108,12 @@ principal:
     printf("+-------------------------------------+\n");
     printf("| " Vermelho "  Escolha umas das opções abaixo. " Amarelo "  |\n");
     printf("+-------------------------------------+\n");
-    printf("| 1 - "Ciano"Login                           |\n");
-    printf("| 2 - "Ciano"Registro                        |\n");
-    printf("| 3 - "Ciano"Créditos                        |\n");
-    printf("| 4 - "Ciano"Sair                            |\n");
+    printf("| 1 - "Ciano"Login   "Amarelo"                        |\n");
+    printf("| 2 - "Ciano"Registro  "Amarelo"                      |\n");
+    printf("| 3 - "Ciano"Créditos  "Amarelo"                      |\n");
+    printf("| 4 - "Ciano"Sair       "Amarelo"                     |\n");
     printf("+-------------------------------------+\n");
-    printf("| Resposta: ");
+    printf("| "Vermelho"Resposta"Amarelo": ");
     scanf("%i",&switches.a);
     switch(switches.a)
     {
@@ -161,7 +161,7 @@ menu:
         printf("| 6 - "Ciano"Sair                          "Amarelo"        |\n");
         if(mysql_fetch_row(res) != NULL)
         {
-            printf("| 7 - Admin menu                            |\n");
+            printf("| 7 - "Ciano"Admin menu                        "Amarelo"    |\n");
         }
         printf("+-------------------------------------------+\n");
         printf("| " Vermelho "Resposta" Amarelo ": ");
@@ -421,7 +421,7 @@ transferencias:
                 row = mysql_fetch_row(res);
                 if(row == NULL)
                 {
-                    printf("O perfil inserido não foi encontrado. Tente novamente.\n");
+                    printf(""Vermelho"O perfil inserido não foi encontrado. Tente novamente.\n");
                     sleep(3);
                     goto transferencias;
                 }
@@ -437,7 +437,7 @@ transferencias:
                 money = atoi(row[2]);
                 if(transferenciadata.money > money)
                 {
-                    printf("Não tem saldo suficiente para efetuar esta operação.\n");
+                    printf(""Vermelho"Não tem saldo suficiente para efetuar esta operação.\n");
                     sleep(3);
                     goto transferencias;
                 }
@@ -454,7 +454,7 @@ transferencias:
                     printf(""Vermelho"Query failed: %s\n", mysql_error(con));
                     exit(0);
                 }
-                printf("Dinheiro transferido com sucesso.\n");
+                printf(""Amarelo"Dinheiro transferido com sucesso.\n");
                 pressanykey();
                 goto menu;
                 break;
@@ -463,7 +463,7 @@ transferencias:
                 break;
             case 4:
                 cls();
-                printf("A sair do programa...");
+                printf(""Amarelo"A sair do programa...");
                 SetConsoleTitle("A sair do programa...");
                 sleep(3);
                 exit(0);
@@ -473,13 +473,13 @@ transferencias:
             }
             break;
         case 5:
-            printf("A terminar sessão...");
+            printf(""Amarelo"A terminar sessão...");
             sleep(3);
             goto principal;
             break;
         case 6:
             cls();
-            printf("A sair do programa...");
+            printf(""Amarelo"A sair do programa...");
             SetConsoleTitle("A sair do programa...");
             sleep(3);
             exit(0);
@@ -494,37 +494,37 @@ transferencias:
             res = mysql_use_result(con);
             if(mysql_fetch_row(res) == NULL)
             {
-                printf("O utilizador não tem permissão para acessar este menu.");
+                printf(""Vermelho"O utilizador não tem permissão para acessar este menu.");
                 sleep(3);
                 goto menu;
             }
             mysql_free_result(res);
 admin:
             cls();
+            printf(""Amarelo"+---------------------------+\n");
+            printf("|   "Vermelho"Menu de Administrador "Amarelo"  |\n");
             printf("+---------------------------+\n");
-            printf("|   Menu de Administrador   |\n");
+            printf("| 1 - "Ciano"Gerir utilizadores "Amarelo"   |\n");
+            printf("| 2 - "Ciano"Gerir administradores"Amarelo" |\n");
+            printf("| 3 - "Ciano"Voltar ao menu  "Amarelo"      |\n");
+            printf("| 4 - "Ciano"Terminar Sessão      "Amarelo" |\n");
+            printf("| 5 - "Ciano"Sair do programa"Amarelo"      |\n");
             printf("+---------------------------+\n");
-            printf("| 1 - Gerir utilizadores    |\n");
-            printf("| 2 - Gerir administradores |\n");
-            printf("| 3 - Voltar ao menu        |\n");
-            printf("| 4 - Terminar Sessão       |\n");
-            printf("| 5 - Sair do programa      |\n");
-            printf("+---------------------------+\n");
-            printf("| Resposta: ");
+            printf("| "Vermelho"Resposta"Amarelo": ");
             scanf("%i", &switches.d);
             fflush(stdin);
             switch(switches.d)
             {
             case 1:
                 cls();
+                printf(""Amarelo"+---------------------------------+\n");
+                printf("|     "Vermelho"Gestão de utilizadores"Amarelo"      |\n");
                 printf("+---------------------------------+\n");
-                printf("|     Gestão de utilizadores      |\n");
+                printf("| 1 - "Ciano"Apagar utilizador  "Amarelo"         |\n");
+                printf("| 2 - "Ciano"Alterar senha de utilizador"Amarelo" |\n");
+                printf("| 3 - "Ciano"Voltar atrás             "Amarelo"   |\n");
                 printf("+---------------------------------+\n");
-                printf("| 1 - Apagar utilizador           |\n");
-                printf("| 2 - Alterar senha de utilizador |\n");
-                printf("| 3 - Voltar atrás                |\n");
-                printf("+---------------------------------+\n");
-                printf("| Resposta: ");
+                printf("| "Vermelho"Resposta"Amarelo": ");
                 scanf("%i", &switches.e);
                 fflush(stdin);
                 switch(switches.e)
@@ -543,7 +543,7 @@ deleteuser:
                     res = mysql_use_result(con);
                     if(mysql_fetch_row(res) == NULL)
                     {
-                        printf("Utilizador não encontrado.\n");
+                        printf(""Vermelho"Utilizador não encontrado.\n");
                         sleep(3);
                         goto deleteuser;
                     }
@@ -554,13 +554,13 @@ deleteuser:
                         printf(""Vermelho"Query failed: %s\n", mysql_error(con));
                         exit(0);
                     }
-                    printf("Utilizador eliminado com sucesso.\n");
+                    printf(""Amarelo"Utilizador eliminado com sucesso.\n");
                     sleep(3);
                     goto admin;
                     break;
                 case 2:
 changepassuser:
-                    printf("Insira o utilizador que deseja alterar a senha.\n");
+                    printf(""Amarelo"Insira o utilizador que deseja alterar a senha.\n");
                     char nomecpu[20];
                     gets(nomecpu);
                     sprintf(mysqlvalues.query21, "SELECT * FROM contas WHERE username = '%s';", nomecpu);
@@ -572,12 +572,12 @@ changepassuser:
                     res = mysql_use_result(con);
                     if(mysql_fetch_row(res) == NULL)
                     {
-                        printf("Utilizador não encontrado.\n");
+                        printf(""Vermelho"Utilizador não encontrado.\n");
                         sleep(3);
                         goto changepassuser;
                     }
                     mysql_free_result(res);
-                    printf("Insira a nova senha.\n");
+                    printf(""Amarelo"Insira a nova senha.\n");
                     char password[20];
                     gets(password);
                     sprintf(mysqlvalues.query22, "UPDATE `contas` SET Password = '%s' WHERE Username = '%s';", password, nomecpu);
@@ -586,7 +586,7 @@ changepassuser:
                         printf(""Vermelho"Query failed: %s\n", mysql_error(con));
                         exit(0);
                     }
-                    printf("A senha foi alterada com sucesso.\n");
+                    printf(""Amarelo"A senha foi alterada com sucesso.\n");
                     pressanykey();
                     goto admin;
                     break;
@@ -600,7 +600,7 @@ changepassuser:
             case 2:
 changeusergroup:
                 fflush(stdin);
-                printf("Insira o utilizador que deseja alterar.\n");
+                printf(""Amarelo"Insira o utilizador que deseja alterar.\n");
                 char user[20];
                 gets(user);
                 sprintf(mysqlvalues.query23, "SELECT * FROM contas WHERE username = '%s';", user);
@@ -612,7 +612,7 @@ changeusergroup:
                 res = mysql_use_result(con);
                 if(mysql_fetch_row(res) == NULL)
                 {
-                    printf("Utilizador não encontrado.\n");
+                    printf(""Vermelho"Utilizador não encontrado.\n");
                     sleep(3);
                     goto changeusergroup;
                 }
@@ -633,7 +633,7 @@ changeusergroup:
                         printf(""Vermelho"Query failed: %s\n", mysql_error(con));
                         exit(0);
                     }
-                    printf("O utilizador foi promovido para administrador com sucesso.\n");
+                    printf(""Amarelo"O utilizador foi promovido para administrador com sucesso.\n");
                     sleep(3);
                     goto admin;
                 }
@@ -646,7 +646,7 @@ changeusergroup:
                         printf(""Vermelho"Query failed: %s\n", mysql_error(con));
                         exit(0);
                     }
-                    printf("O utilizador foi rebaixado para membro com sucesso.\n");
+                    printf(""Amarelo"O utilizador foi rebaixado para membro com sucesso.\n");
                     sleep(3);
                     goto admin;
                 }
@@ -655,14 +655,14 @@ changeusergroup:
                 goto menu;
                 break;
             case 4:
-                printf("A terminar sessão...");
+                printf(""Vermelho"A terminar sessão...");
                 sleep(3);
                 goto principal;
                 break;
             case 5:
                 cls();
-                printf("A sair do programa...");
-                SetConsoleTitle("A sair do programa...");
+                printf(""Vermelho"A sair do programa...");
+                SetConsoleTitle(""Vermelho"A sair do programa...");
                 sleep(3);
                 exit(0);
                 break;
@@ -676,14 +676,14 @@ changeusergroup:
     case 2:
 registomenu:
         cls();
+        printf(""Amarelo"+-----------------+\n");
+        printf("| "Vermelho"Menu do Registo "Amarelo"|\n");
         printf("+-----------------+\n");
-        printf("| Menu do Registo |\n");
-        printf("+-----------------+\n");
-        printf("| Username: ");
+        printf("| "Vermelho"Username"Amarelo": ");
         scanf("%s",&registo.username);
-        printf("| Password: ");
+        printf("| "Vermelho"Password"Amarelo": ");
         scanf("%s",&registo.password);
-        printf("A inserir a suas informações na base de dados. Aguarde alguns segundos...");
+        printf(""Amarelo"A inserir a suas informações na base de dados. Aguarde alguns segundos...");
         sprintf(mysqlvalues.query7, "SELECT * FROM contas WHERE Username = '%s';", registo.username);
         if(mysql_query(con, mysqlvalues.query7))
         {
@@ -693,7 +693,7 @@ registomenu:
         res = mysql_use_result(con);
         if(mysql_fetch_row(res) != NULL)
         {
-            printf("Username em utilização.\n");
+            printf(""Vermelho"Username em utilização.\n");
             mysql_free_result(res);
             sleep(3);
             goto registomenu;
@@ -712,24 +712,24 @@ registomenu:
             printf(""Vermelho"Query failed: %s\n", mysql_error(con));
             exit(0);
         }
-        printf("O registo foi efetuado com sucesso. A voltar ao menu...");
+        printf(""Amarelo"O registo foi efetuado com sucesso. A voltar ao menu...");
         sleep(3);
         goto principal;
         break;
     case 3:
         cls();
+        printf(""Amarelo"+---------------+\n");
+        printf("|  "Vermelho"Programador  |\n");
         printf("+---------------+\n");
-        printf("|  Programador  |\n");
-        printf("+---------------+\n");
-        printf("| António Matos |\n");
+        printf("| "Ciano"António Matos "Amarelo"|\n");
         printf("+---------------+\n");
         pressanykey();
         goto principal;
         break;
     case 4:
         cls();
-        printf("A sair do programa...");
-        SetConsoleTitle("A sair do programa...");
+        printf(""Vermelho"A sair do programa...");
+        SetConsoleTitle(""Vermelho"A sair do programa...");
         sleep(3);
         exit(0);
         break;
