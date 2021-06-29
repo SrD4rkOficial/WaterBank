@@ -683,7 +683,7 @@ registomenu:
         scanf("%s",&registo.username);
         printf("| "Vermelho"Password"Amarelo": ");
         scanf("%s",&registo.password);
-        printf(""Amarelo"A inserir a suas informações na base de dados. Aguarde alguns segundos...");
+        printf(""Amarelo"A inserir a suas informações na base de dados. Aguarde alguns segundos...\n");
         sprintf(mysqlvalues.query7, "SELECT * FROM contas WHERE Username = '%s';", registo.username);
         if(mysql_query(con, mysqlvalues.query7))
         {
