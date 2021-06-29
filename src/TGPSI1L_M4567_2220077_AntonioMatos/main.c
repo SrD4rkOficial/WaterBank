@@ -322,7 +322,6 @@ menu:
             break;
         case 4:
 transferencias:
-            mysql_free_result(res);
             cls();
             printf(""Amarelo"+-------------------------------------------+\n");
             printf("| "Vermelho"Bem-vindo, escolha uma das opções abaixo. "Amarelo"|\n");
@@ -683,7 +682,6 @@ registomenu:
         scanf("%s",&registo.username);
         printf("| "Vermelho"Password"Amarelo": ");
         scanf("%s",&registo.password);
-        printf(""Amarelo"A inserir a suas informações na base de dados. Aguarde alguns segundos...\n");
         sprintf(mysqlvalues.query7, "SELECT * FROM contas WHERE Username = '%s';", registo.username);
         if(mysql_query(con, mysqlvalues.query7))
         {
@@ -698,6 +696,7 @@ registomenu:
             sleep(3);
             goto registomenu;
         }
+        printf(""Amarelo"A inserir a suas informações na base de dados. Aguarde alguns segundos...\n");
         mysql_free_result(res);
         int iban[4];
         for(int i = 0; i < 5; i++)
