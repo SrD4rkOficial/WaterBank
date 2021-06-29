@@ -73,6 +73,9 @@ struct switches switches;
 
 int main()
 {
+    cls();
+    printf(Amarelo);
+    loadingfunc();
     FILE *ficheiro;
     ficheiro = fopen("ficheiro.txt", "r+");
     char host[30];
@@ -83,7 +86,8 @@ int main()
     MYSQL_ROW row;
     char *server = host;
     char *user = "root";
-    char *pass = "5603";
+    // char *pass = "5603";
+    char *pass = "1589227704";
     char *database = "psi";
     con = mysql_init(NULL);
     if(!mysql_real_connect(con, server, user, pass, database, 0, NULL, 0))
@@ -93,24 +97,23 @@ int main()
     ////////////////////////////////////////
     idioma();
     fullscreen();
-    loadingfunc();
     cls();
     title("Waterbank");
     printf("+-------------------------+\n");
-    printf("| Bem-vindo ao WaterBank. |\n");
+    printf("| " Ciano "Bem-vindo ao WaterBank." Amarelo " |\n");
     printf("+-------------------------+\n");
     sleep(5);
 principal:
     cls();
     printf("+-------------------------------------+\n");
-    printf("| Escolha umas das opções abaixo.     |\n");
+    printf("| " Vermelho "  Escolha umas das opções abaixo. " Amarelo "  |\n");
     printf("+-------------------------------------+\n");
-    printf("| 1 - Login                           |\n");
-    printf("| 2 - Registro                        |\n");
-    printf("| 3 - Créditos                        |\n");
-    printf("| 4 - Sair                            |\n");
+    printf("| 1 - "Ciano"Login   "Amarelo"                        |\n");
+    printf("| 2 - "Ciano"Registro  "Amarelo"                      |\n");
+    printf("| 3 - "Ciano"Créditos  "Amarelo"                      |\n");
+    printf("| 4 - "Ciano"Sair       "Amarelo"                     |\n");
     printf("+-------------------------------------+\n");
-    printf("| Resposta: ");
+    printf("| "Vermelho"Resposta"Amarelo": ");
     scanf("%i",&switches.a);
     switch(switches.a)
     {
@@ -118,16 +121,16 @@ principal:
 login:
         cls();
         printf("+---------------+\n");
-        printf("| Menu do Login |\n");
+        printf("| " Vermelho "Menu do Login" Amarelo " |\n");
         printf("+---------------+\n");
-        printf("| Username: ");
+        printf("| " Vermelho "Username" Amarelo ": ");
         scanf("%s",&login.username);
-        printf("| Password: ");
+        printf("| " Vermelho "Password" Amarelo ": ");
         scanf("%s",&login.password);
         sprintf(mysqlvalues.query1, "SELECT * FROM contas WHERE username = '%s' AND password = '%s'", login.username, login.password);
         if(mysql_query(con, mysqlvalues.query1))
         {
-            printf("Query failed: %s\n", mysql_error(con));
+            printf(""Vermelho""Vermelho"Query failed: %s\n", mysql_error(con));
             exit(0);
         }
         res = mysql_use_result(con);
@@ -143,25 +146,25 @@ menu:
         sprintf(mysqlvalues.query18, "SELECT * FROM contas WHERE username = '%s' AND Grupo = 1", login.username);
         if(mysql_query(con, mysqlvalues.query18))
         {
-            printf("Query failed: %s\n", mysql_error(con));
+            printf(""Vermelho""Vermelho"Query failed: %s\n", mysql_error(con));
             exit(0);
         }
         res = mysql_use_result(con);
         printf("+-------------------------------------------+\n");
-        printf("| Bem-vindo, escolha uma das opções abaixo. |\n");
+        printf("| " Vermelho "Bem-vindo, escolha uma das opções abaixo. "Amarelo"|\n");
         printf("+-------------------------------------------+\n");
-        printf("| 1 - Solicitar cartão                      |\n");
-        printf("| 2 - Verificar dados/saldo conta bancária  |\n");
-        printf("| 3 - Verificar dados cartão                |\n");
-        printf("| 4 - Transferir dinheiro                   |\n");
-        printf("| 5 - Logout                                |\n");
-        printf("| 6 - Sair                                  |\n");
+        printf("| 1 - "Ciano"Solicitar cartão          "Amarelo"            |\n");
+        printf("| 2 - "Ciano"Verificar dados/saldo conta bancária "Amarelo" |\n");
+        printf("| 3 - "Ciano"Verificar dados cartão           "Amarelo"     |\n");
+        printf("| 4 - "Ciano"Transferir dinheiro             "Amarelo"      |\n");
+        printf("| 5 - "Ciano"Logout                         "Amarelo"       |\n");
+        printf("| 6 - "Ciano"Sair                          "Amarelo"        |\n");
         if(mysql_fetch_row(res) != NULL)
         {
-            printf("| 7 - Admin menu                            |\n");
+            printf("| 7 - "Ciano"Admin menu                        "Amarelo"    |\n");
         }
         printf("+-------------------------------------------+\n");
-        printf("| Resposta: ");
+        printf("| " Vermelho "Resposta" Amarelo ": ");
         scanf("%i",&switches.b);
         mysql_free_result(res);
         switch(switches.b)
@@ -170,18 +173,18 @@ menu:
             sprintf(mysqlvalues.query2, "SELECT * FROM `contas` WHERE `username` = '%s' AND `Cartao_solicitado` = 0;", login.username);
             if(mysql_query(con, mysqlvalues.query2))
             {
-                printf("Query failed: %s\n", mysql_error(con));
+                printf(""Vermelho""Vermelho"Query failed: %s\n", mysql_error(con));
                 exit(0);
             }
             res = mysql_use_result(con);
             if(mysql_fetch_row(res) == NULL)
             {
-                printf("O seu cartão já foi solicitado.\n");
+                printf(""Amarelo"O seu cartão já foi solicitado.\n");
                 sleep(3);
                 goto menu;
             }
             mysql_free_result(res);
-            printf("A solicitação foi feita com sucesso. Aguarde alguns segundos...\n");
+            printf(""Amarelo"A solicitação foi feita com sucesso. Aguarde alguns segundos...\n");
             srand(time(NULL));
             int cartao1 = (rand() % (9999 + 1 - 1000)) + 1000;
             sleep(5);
@@ -195,12 +198,12 @@ menu:
             char cvvchar[5];
             sprintf(cvvchar, "%i", cvv);
             printf("+----------------------------------+\n");
-            printf("| Titular                          |\n");
-            printf("| %s\n", login.username);
+            printf("| "Vermelho"Titular                         "Amarelo" |\n");
+            printf("| "Ciano"%s\n", login.username);
+            printf(""Amarelo"|                                  |\n");
+            printf("| "Vermelho"Nº Cartão "Ciano"%i%i%i%i"Amarelo"       |\n", cartao1, cartao2, cartao3, cartao4);
             printf("|                                  |\n");
-            printf("| Nº Cartão %i%i%i%i       |\n", cartao1, cartao2, cartao3, cartao4);
-            printf("|                                  |\n");
-            printf("| CVC %s          Validade 2025   |\n", cvvchar);
+            printf("| "Vermelho"CVC "Ciano"%s"Amarelo"          "Vermelho"Validade "Ciano"2025"Amarelo"   |\n", cvvchar);
             printf("+----------------------------------+\n");
             ///////////////////////////////////////////////////////////////////
             sleep(5);
@@ -221,24 +224,24 @@ menu:
             char codigocartaochar[5];
             sprintf(codigocartaochar, "%i", codigocartao);
             printf("\n");
-            printf("+----------------------------------+\n");
-            printf("| Entidade                         |\n");
-            printf("| %i%i                            |\n", entidade1, entidade2);
+            printf(""Amarelo"+----------------------------------+\n");
+            printf("| "Vermelho"Entidade                   "Amarelo"      |\n");
+            printf("| "Ciano"%i%i "Amarelo"                           |\n", entidade1, entidade2);
             printf("|                                  |\n");
-            printf("| Referência %s             |\n", referencia1char);
+            printf("| "Vermelho"Referência "Ciano"%s "Amarelo"            |\n", referencia1char);
             printf("|                                  |\n");
-            printf("| Código %s                      |\n", codigocartaochar);
+            printf("| "Vermelho"Código "Ciano"%s            "Amarelo"          |\n", codigocartaochar);
             printf("+----------------------------------+\n");
             sprintf(mysqlvalues.query3, "UPDATE `contas` SET Cartao_solicitado = 1, Cartao_codigo = '%s', Cartao_entidade = '%i%i' WHERE Username = '%s';", codigocartaochar, entidade1, entidade2, login.username);
             if(mysql_query(con, mysqlvalues.query3))
             {
-                printf("Query failed: %s\n", mysql_error(con));
+                printf(""Vermelho""Vermelho"Query failed: %s\n", mysql_error(con));
                 exit(0);
             }
             sprintf(mysqlvalues.query4, "UPDATE `contas` SET Cartao_referencia = '%s', Cartao_numero = '%i%i%i%i', Cartao_ccv = '%s' WHERE Username = '%s';", referencia1char, cartao1, cartao2, cartao3, cartao4, cvvchar, login.username);
             if(mysql_query(con, mysqlvalues.query4))
             {
-                printf("Query failed: %s\n", mysql_error(con));
+                printf(""Vermelho""Vermelho"Query failed: %s\n", mysql_error(con));
                 exit(0);
             }
             pressanykey();
@@ -249,7 +252,7 @@ menu:
             sprintf(mysqlvalues.query5, "SELECT * FROM `contas` WHERE Username = '%s';", login.username);
             if(mysql_query(con, mysqlvalues.query5))
             {
-                printf("Query failed: %s\n", mysql_error(con));
+                printf(""Vermelho""Vermelho"Query failed: %s\n", mysql_error(con));
                 exit(0);
             }
             MYSQL_RES *res = mysql_use_result(con);
@@ -258,12 +261,12 @@ menu:
             {
                 erroexit();
             }
+            printf(""Amarelo"+---------------------------+\n");
+            printf("|       "Vermelho"    IBAN         "Amarelo"   |\n");
             printf("+---------------------------+\n");
-            printf("|           IBAN            |\n");
+            printf("| "Ciano"%s"Amarelo" |\n", row[3]);
             printf("+---------------------------+\n");
-            printf("| %s |\n", row[3]);
-            printf("+---------------------------+\n");
-            printf("| %s$\n", row[2]);
+            printf("| "Ciano"%s"Vermelho"$"Amarelo"\n", row[2]);
             printf("+---------------------------+\n");
             mysql_free_result(res);
             pressanykey();
@@ -273,13 +276,13 @@ menu:
             sprintf(mysqlvalues.query11, "SELECT * FROM `contas` WHERE `username` = '%s' AND `Cartao_solicitado` = 1;", login.username);
             if(mysql_query(con, mysqlvalues.query11))
             {
-                printf("Query failed: %s\n", mysql_error(con));
+                printf(""Vermelho""Vermelho"Query failed: %s\n", mysql_error(con));
                 exit(0);
             }
             res = mysql_use_result(con);
             if(mysql_fetch_row(res) == NULL)
             {
-                printf("O seu cartão ainda não foi solicitado.\n");
+                printf(""Amarelo"O seu cartão ainda não foi solicitado.\n");
                 sleep(3);
                 goto menu;
             }
@@ -287,7 +290,7 @@ menu:
             sprintf(mysqlvalues.query8, "SELECT * FROM `contas` WHERE Username = '%s';", login.username);
             if(mysql_query(con, mysqlvalues.query8))
             {
-                printf("Query failed: %s\n", mysql_error(con));
+                printf(""Vermelho""Vermelho"Query failed: %s\n", mysql_error(con));
                 exit(0);
             }
             res = mysql_use_result(con);
@@ -296,22 +299,22 @@ menu:
             {
                 erroexit();
             }
-            printf("+----------------------------------+\n");
-            printf("| Titular                          |\n");
-            printf("| %s\n", row[0]);
+            printf(""Amarelo"+----------------------------------+\n");
+            printf("| "Vermelho"Titular            "Amarelo"              |\n");
+            printf("| "Ciano"%s"Amarelo"\n", row[0]);
             printf("|                                  |\n");
-            printf("| Nº Cartão %s       |\n", row[9]);
+            printf("| "Vermelho"Nº Cartão "Ciano"%s"Amarelo"       |\n", row[9]);
             printf("|                                  |\n");
-            printf("| CVC %s          Validade 2025   |\n", row[10]);
+            printf("| "Vermelho"CVC "Ciano"%s        "Vermelho"  Validade "Ciano"2025"Amarelo"   |\n", row[10]);
             printf("+----------------------------------+\n");
             printf("\n");
             printf("+----------------------------------+\n");
-            printf("| Entidade                         |\n");
-            printf("| %s                            |\n", row[7]);
+            printf("| "Vermelho"Entidade              "Amarelo"           |\n");
+            printf("| "Ciano"%s                           "Amarelo" |\n", row[7]);
             printf("|                                  |\n");
-            printf("| Referência %s             |\n", row[8]);
+            printf("| "Vermelho"Referência "Ciano"%s  "Amarelo"           |\n", row[8]);
             printf("|                                  |\n");
-            printf("| Código %s                      |\n", row[6]);
+            printf("| "Vermelho"Código "Ciano"%s  "Amarelo"                    |\n", row[6]);
             printf("+----------------------------------+\n");
             mysql_free_result(res);
             pressanykey();
@@ -321,49 +324,49 @@ menu:
 transferencias:
             mysql_free_result(res);
             cls();
+            printf(""Amarelo"+-------------------------------------------+\n");
+            printf("| "Vermelho"Bem-vindo, escolha uma das opções abaixo. "Amarelo"|\n");
             printf("+-------------------------------------------+\n");
-            printf("| Bem-vindo, escolha uma das opções abaixo. |\n");
+            printf("| 1 - "Ciano"Transferir por entidade e referencia "Amarelo" |\n");
+            printf("| 2 - "Ciano"Transferir por IBan              "Amarelo"     |\n");
+            printf("| 3 - "Ciano"Menu anterior                   "Amarelo"      |\n");
+            printf("| 4 - "Ciano"Sair                            "Amarelo"      |\n");
             printf("+-------------------------------------------+\n");
-            printf("| 1 - Transferir por entidade e referencia  |\n");
-            printf("| 2 - Transferir por IBan                   |\n");
-            printf("| 3 - Menu anterior                         |\n");
-            printf("| 4 - Sair                                  |\n");
-            printf("+-------------------------------------------+\n");
-            printf("| Resposta: ");
+            printf("| "Vermelho"Resposta"Amarelo": ");
             scanf("%i", &switches.c);
             fflush(stdin);
             switch(switches.c)
             {
             case 1:
                 cls();
-                printf("Insira a entidade a que deseja fazer uma transferência. (5 números)\n");
-                printf("Entidade: ");
+                printf(""Amarelo"Insira a entidade a que deseja fazer uma transferência. (5 números)\n");
+                printf(""Vermelho"Entidade"Amarelo": ");
                 scanf("%i", &transferenciadata.entidade);
 
-                printf("\nInsira a referência a que deseja fazer uma transferência. (9 números)\n");
-                printf("Referência: ");
+                printf("\n"Amarelo"Insira a referência a que deseja fazer uma transferência. (9 números)\n");
+                printf(""Vermelho"Referência"Amarelo": ");
                 scanf("%i", &transferenciadata.referencia);
 
-                printf("\nInsira a quantidade em euros que deseja enviar.\n");
-                printf("Quantidade: ");
+                printf("\n"Amarelo"Insira a quantidade em euros que deseja enviar.\n");
+                printf(""Vermelho"Quantidade"Amarelo": ");
                 scanf("%i", &transferenciadata.money);
                 if(transferenciadata.money < 1)
                 {
-                    printf("A quantidade tem de ser acima de 1.");
+                    printf(""Vermelho"A quantidade tem de ser acima de 1.");
                     sleep(3);
                     goto transferencias;
                 }
                 sprintf(mysqlvalues.query9, "SELECT * FROM `contas` WHERE `Cartao_referencia` = '%i' AND `Cartao_entidade` = '%i';", transferenciadata.referencia, transferenciadata.entidade);
                 if(mysql_query(con, mysqlvalues.query9))
                 {
-                    printf("Query failed: %s\n", mysql_error(con));
+                    printf(""Vermelho"Query failed: %s\n", mysql_error(con));
                     exit(0);
                 }
                 res = mysql_use_result(con);
                 row = mysql_fetch_row(res);
                 if(row == NULL)
                 {
-                    printf("O perfil inserido não foi encontrado. Tente novamente.\n");
+                    printf(""Vermelho"O perfil inserido não foi encontrado. Tente novamente.\n");
                     sleep(3);
                     goto transferencias;
                 }
@@ -371,7 +374,7 @@ transferencias:
                 sprintf(mysqlvalues.query12, "SELECT * FROM `contas` WHERE `Username` = '%s';", login.username);
                 if(mysql_query(con, mysqlvalues.query12))
                 {
-                    printf("Query failed: %s\n", mysql_error(con));
+                    printf(""Vermelho"Query failed: %s\n", mysql_error(con));
                     exit(0);
                 }
                 res = mysql_use_result(con);
@@ -379,7 +382,7 @@ transferencias:
                 int money = atoi(row[2]);
                 if(transferenciadata.money > money)
                 {
-                    printf("Não tem saldo suficiente para efetuar esta operação.\n");
+                    printf(""Vermelho"Não tem saldo suficiente para efetuar esta operação.\n");
                     sleep(3);
                     goto transferencias;
                 }
@@ -387,38 +390,38 @@ transferencias:
                 sprintf(mysqlvalues.query10, "UPDATE `contas` SET Saldo = Saldo + %i WHERE Cartao_entidade = '%i' AND Cartao_referencia = '%i';", transferenciadata.money, transferenciadata.entidade, transferenciadata.referencia);
                 if(mysql_query(con, mysqlvalues.query10))
                 {
-                    printf("Query failed: %s\n", mysql_error(con));
+                    printf(""Vermelho"Query failed: %s\n", mysql_error(con));
                     exit(0);
                 }
                 sprintf(mysqlvalues.query13, "UPDATE `contas` SET Saldo = Saldo - %i WHERE Username = '%s';", transferenciadata.money, login.username);
                 if(mysql_query(con, mysqlvalues.query13))
                 {
-                    printf("Query failed: %s\n", mysql_error(con));
+                    printf(""Vermelho"Query failed: %s\n", mysql_error(con));
                     exit(0);
                 }
-                printf("Dinheiro transferido com sucesso.\n");
+                printf(""Amarelo"Dinheiro transferido com sucesso.\n");
                 pressanykey();
                 goto menu;
                 break;
             case 2:
-                printf("Insira o IBan para qual quer enviar.\n");
-                printf("IBan: ");
+                printf(""Amarelo"Insira o IBan para qual quer enviar.\n");
+                printf(""Vermelho"IBan"Amarelo": ");
                 gets(transferenciadata.iban);
-                printf("Insira a quantidade que deseja enviar.\n");
-                printf("Quantidade: ");
+                printf(""Amarelo"Insira a quantidade que deseja enviar.\n");
+                printf(""Vermelho"Quantidade"Amarelo": ");
                 scanf("%i", &transferenciadata.money);
                 fflush(stdin);
                 sprintf(mysqlvalues.query14, "SELECT * FROM `contas` WHERE `IBan` = '%s';", transferenciadata.iban);
                 if(mysql_query(con, mysqlvalues.query14))
                 {
-                    printf("Query failed: %s\n", mysql_error(con));
+                    printf(""Vermelho"Query failed: %s\n", mysql_error(con));
                     exit(0);
                 }
                 res = mysql_use_result(con);
                 row = mysql_fetch_row(res);
                 if(row == NULL)
                 {
-                    printf("O perfil inserido não foi encontrado. Tente novamente.\n");
+                    printf(""Vermelho"O perfil inserido não foi encontrado. Tente novamente.\n");
                     sleep(3);
                     goto transferencias;
                 }
@@ -426,7 +429,7 @@ transferencias:
                 sprintf(mysqlvalues.query15, "SELECT * FROM `contas` WHERE `Username` = '%s';", login.username);
                 if(mysql_query(con, mysqlvalues.query15))
                 {
-                    printf("Query failed: %s\n", mysql_error(con));
+                    printf(""Vermelho"Query failed: %s\n", mysql_error(con));
                     exit(0);
                 }
                 res = mysql_use_result(con);
@@ -434,7 +437,7 @@ transferencias:
                 money = atoi(row[2]);
                 if(transferenciadata.money > money)
                 {
-                    printf("Não tem saldo suficiente para efetuar esta operação.\n");
+                    printf(""Vermelho"Não tem saldo suficiente para efetuar esta operação.\n");
                     sleep(3);
                     goto transferencias;
                 }
@@ -442,16 +445,16 @@ transferencias:
                 sprintf(mysqlvalues.query16, "UPDATE `contas` SET Saldo = Saldo + %i WHERE IBan = '%s';", transferenciadata.money, transferenciadata.iban);
                 if(mysql_query(con, mysqlvalues.query16))
                 {
-                    printf("Query failed: %s\n", mysql_error(con));
+                    printf(""Vermelho"Query failed: %s\n", mysql_error(con));
                     exit(0);
                 }
                 sprintf(mysqlvalues.query17, "UPDATE `contas` SET Saldo = Saldo - %i WHERE Username = '%s';", transferenciadata.money, login.username);
                 if(mysql_query(con, mysqlvalues.query17))
                 {
-                    printf("Query failed: %s\n", mysql_error(con));
+                    printf(""Vermelho"Query failed: %s\n", mysql_error(con));
                     exit(0);
                 }
-                printf("Dinheiro transferido com sucesso.\n");
+                printf(""Amarelo"Dinheiro transferido com sucesso.\n");
                 pressanykey();
                 goto menu;
                 break;
@@ -460,7 +463,7 @@ transferencias:
                 break;
             case 4:
                 cls();
-                printf("A sair do programa...");
+                printf(""Amarelo"A sair do programa...");
                 SetConsoleTitle("A sair do programa...");
                 sleep(3);
                 exit(0);
@@ -470,13 +473,13 @@ transferencias:
             }
             break;
         case 5:
-            printf("A terminar sessão...");
+            printf(""Amarelo"A terminar sessão...");
             sleep(3);
             goto principal;
             break;
         case 6:
             cls();
-            printf("A sair do programa...");
+            printf(""Amarelo"A sair do programa...");
             SetConsoleTitle("A sair do programa...");
             sleep(3);
             exit(0);
@@ -485,43 +488,43 @@ transferencias:
             sprintf(mysqlvalues.query19, "SELECT * FROM contas WHERE username = '%s' AND Grupo = 1", login.username);
             if(mysql_query(con, mysqlvalues.query19))
             {
-                printf("Query failed: %s\n", mysql_error(con));
+                printf(""Vermelho"Query failed: %s\n", mysql_error(con));
                 exit(0);
             }
             res = mysql_use_result(con);
             if(mysql_fetch_row(res) == NULL)
             {
-                printf("O utilizador não tem permissão para acessar este menu.");
+                printf(""Vermelho"O utilizador não tem permissão para acessar este menu.");
                 sleep(3);
                 goto menu;
             }
             mysql_free_result(res);
 admin:
             cls();
+            printf(""Amarelo"+---------------------------+\n");
+            printf("|   "Vermelho"Menu de Administrador "Amarelo"  |\n");
             printf("+---------------------------+\n");
-            printf("|   Menu de Administrador   |\n");
+            printf("| 1 - "Ciano"Gerir utilizadores "Amarelo"   |\n");
+            printf("| 2 - "Ciano"Gerir administradores"Amarelo" |\n");
+            printf("| 3 - "Ciano"Voltar ao menu  "Amarelo"      |\n");
+            printf("| 4 - "Ciano"Terminar Sessão      "Amarelo" |\n");
+            printf("| 5 - "Ciano"Sair do programa"Amarelo"      |\n");
             printf("+---------------------------+\n");
-            printf("| 1 - Gerir utilizadores    |\n");
-            printf("| 2 - Gerir administradores |\n");
-            printf("| 3 - Voltar ao menu        |\n");
-            printf("| 4 - Terminar Sessão       |\n");
-            printf("| 5 - Sair do programa      |\n");
-            printf("+---------------------------+\n");
-            printf("| Resposta: ");
+            printf("| "Vermelho"Resposta"Amarelo": ");
             scanf("%i", &switches.d);
             fflush(stdin);
             switch(switches.d)
             {
             case 1:
                 cls();
+                printf(""Amarelo"+---------------------------------+\n");
+                printf("|     "Vermelho"Gestão de utilizadores"Amarelo"      |\n");
                 printf("+---------------------------------+\n");
-                printf("|     Gestão de utilizadores      |\n");
+                printf("| 1 - "Ciano"Apagar utilizador  "Amarelo"         |\n");
+                printf("| 2 - "Ciano"Alterar senha de utilizador"Amarelo" |\n");
+                printf("| 3 - "Ciano"Voltar atrás             "Amarelo"   |\n");
                 printf("+---------------------------------+\n");
-                printf("| 1 - Apagar utilizador           |\n");
-                printf("| 2 - Alterar senha de utilizador |\n");
-                printf("| 3 - Voltar atrás                |\n");
-                printf("+---------------------------------+\n");
-                printf("| Resposta: ");
+                printf("| "Vermelho"Resposta"Amarelo": ");
                 scanf("%i", &switches.e);
                 fflush(stdin);
                 switch(switches.e)
@@ -534,13 +537,13 @@ deleteuser:
                     sprintf(mysqlvalues.query19, "SELECT * FROM contas WHERE username = '%s';", nome);
                     if(mysql_query(con, mysqlvalues.query19))
                     {
-                        printf("Query failed: %s\n", mysql_error(con));
+                        printf(""Vermelho"Query failed: %s\n", mysql_error(con));
                         exit(0);
                     }
                     res = mysql_use_result(con);
                     if(mysql_fetch_row(res) == NULL)
                     {
-                        printf("Utilizador não encontrado.\n");
+                        printf(""Vermelho"Utilizador não encontrado.\n");
                         sleep(3);
                         goto deleteuser;
                     }
@@ -548,42 +551,42 @@ deleteuser:
                     sprintf(mysqlvalues.query20, "DELETE FROM contas WHERE username = '%s';", nome);
                     if(mysql_query(con, mysqlvalues.query20))
                     {
-                        printf("Query failed: %s\n", mysql_error(con));
+                        printf(""Vermelho"Query failed: %s\n", mysql_error(con));
                         exit(0);
                     }
-                    printf("Utilizador eliminado com sucesso.\n");
+                    printf(""Amarelo"Utilizador eliminado com sucesso.\n");
                     sleep(3);
                     goto admin;
                     break;
                 case 2:
 changepassuser:
-                    printf("Insira o utilizador que deseja alterar a senha.\n");
+                    printf(""Amarelo"Insira o utilizador que deseja alterar a senha.\n");
                     char nomecpu[20];
                     gets(nomecpu);
                     sprintf(mysqlvalues.query21, "SELECT * FROM contas WHERE username = '%s';", nomecpu);
                     if(mysql_query(con, mysqlvalues.query21))
                     {
-                        printf("Query failed: %s\n", mysql_error(con));
+                        printf(""Vermelho"Query failed: %s\n", mysql_error(con));
                         exit(0);
                     }
                     res = mysql_use_result(con);
                     if(mysql_fetch_row(res) == NULL)
                     {
-                        printf("Utilizador não encontrado.\n");
+                        printf(""Vermelho"Utilizador não encontrado.\n");
                         sleep(3);
                         goto changepassuser;
                     }
                     mysql_free_result(res);
-                    printf("Insira a nova senha.\n");
+                    printf(""Amarelo"Insira a nova senha.\n");
                     char password[20];
                     gets(password);
                     sprintf(mysqlvalues.query22, "UPDATE `contas` SET Password = '%s' WHERE Username = '%s';", password, nomecpu);
                     if(mysql_query(con, mysqlvalues.query22))
                     {
-                        printf("Query failed: %s\n", mysql_error(con));
+                        printf(""Vermelho"Query failed: %s\n", mysql_error(con));
                         exit(0);
                     }
-                    printf("A senha foi alterada com sucesso.\n");
+                    printf(""Amarelo"A senha foi alterada com sucesso.\n");
                     pressanykey();
                     goto admin;
                     break;
@@ -597,19 +600,19 @@ changepassuser:
             case 2:
 changeusergroup:
                 fflush(stdin);
-                printf("Insira o utilizador que deseja alterar.\n");
+                printf(""Amarelo"Insira o utilizador que deseja alterar.\n");
                 char user[20];
                 gets(user);
                 sprintf(mysqlvalues.query23, "SELECT * FROM contas WHERE username = '%s';", user);
                 if(mysql_query(con, mysqlvalues.query23))
                 {
-                    printf("Query failed: %s\n", mysql_error(con));
+                    printf(""Vermelho"Query failed: %s\n", mysql_error(con));
                     exit(0);
                 }
                 res = mysql_use_result(con);
                 if(mysql_fetch_row(res) == NULL)
                 {
-                    printf("Utilizador não encontrado.\n");
+                    printf(""Vermelho"Utilizador não encontrado.\n");
                     sleep(3);
                     goto changeusergroup;
                 }
@@ -618,7 +621,7 @@ changeusergroup:
                 sprintf(mysqlvalues.query24, "SELECT * FROM contas WHERE username = '%s' AND Grupo = 1;", user);
                 if(mysql_query(con, mysqlvalues.query24))
                 {
-                    printf("Query failed: %s\n", mysql_error(con));
+                    printf(""Vermelho"Query failed: %s\n", mysql_error(con));
                     exit(0);
                 }
                 res = mysql_use_result(con);
@@ -627,10 +630,10 @@ changeusergroup:
                     sprintf(mysqlvalues.query25, "UPDATE `contas` SET Grupo = 1 WHERE Username = '%s';", user);
                     if(mysql_query(con, mysqlvalues.query25))
                     {
-                        printf("Query failed: %s\n", mysql_error(con));
+                        printf(""Vermelho"Query failed: %s\n", mysql_error(con));
                         exit(0);
                     }
-                    printf("O utilizador foi promovido para administrador com sucesso.\n");
+                    printf(""Amarelo"O utilizador foi promovido para administrador com sucesso.\n");
                     sleep(3);
                     goto admin;
                 }
@@ -640,10 +643,10 @@ changeusergroup:
                     sprintf(mysqlvalues.query25, "UPDATE `contas` SET Grupo = 0 WHERE Username = '%s';", user);
                     if(mysql_query(con, mysqlvalues.query25))
                     {
-                        printf("Query failed: %s\n", mysql_error(con));
+                        printf(""Vermelho"Query failed: %s\n", mysql_error(con));
                         exit(0);
                     }
-                    printf("O utilizador foi rebaixado para membro com sucesso.\n");
+                    printf(""Amarelo"O utilizador foi rebaixado para membro com sucesso.\n");
                     sleep(3);
                     goto admin;
                 }
@@ -652,14 +655,14 @@ changeusergroup:
                 goto menu;
                 break;
             case 4:
-                printf("A terminar sessão...");
+                printf(""Vermelho"A terminar sessão...");
                 sleep(3);
                 goto principal;
                 break;
             case 5:
                 cls();
-                printf("A sair do programa...");
-                SetConsoleTitle("A sair do programa...");
+                printf(""Vermelho"A sair do programa...");
+                SetConsoleTitle(""Vermelho"A sair do programa...");
                 sleep(3);
                 exit(0);
                 break;
@@ -673,24 +676,24 @@ changeusergroup:
     case 2:
 registomenu:
         cls();
+        printf(""Amarelo"+-----------------+\n");
+        printf("| "Vermelho"Menu do Registo "Amarelo"|\n");
         printf("+-----------------+\n");
-        printf("| Menu do Registo |\n");
-        printf("+-----------------+\n");
-        printf("| Username: ");
+        printf("| "Vermelho"Username"Amarelo": ");
         scanf("%s",&registo.username);
-        printf("| Password: ");
+        printf("| "Vermelho"Password"Amarelo": ");
         scanf("%s",&registo.password);
-        printf("A inserir a suas informações na base de dados. Aguarde alguns segundos...");
+        printf(""Amarelo"A inserir a suas informações na base de dados. Aguarde alguns segundos...");
         sprintf(mysqlvalues.query7, "SELECT * FROM contas WHERE Username = '%s';", registo.username);
         if(mysql_query(con, mysqlvalues.query7))
         {
-            printf("Query failed: %s\n", mysql_error(con));
+            printf(""Vermelho"Query failed: %s\n", mysql_error(con));
             exit(0);
         }
         res = mysql_use_result(con);
         if(mysql_fetch_row(res) != NULL)
         {
-            printf("Username em utilização.\n");
+            printf(""Vermelho"Username em utilização.\n");
             mysql_free_result(res);
             sleep(3);
             goto registomenu;
@@ -706,27 +709,27 @@ registomenu:
         sprintf(mysqlvalues.query6, "INSERT INTO contas (username, password, iban) VALUES ('%s', '%s', 'PT%i%i%i%i%i%i');", registo.username, registo.password, iban[0], iban[1], iban[2], iban[3], iban[4], iban1);
         if(mysql_query(con, mysqlvalues.query6))
         {
-            printf("Query failed: %s\n", mysql_error(con));
+            printf(""Vermelho"Query failed: %s\n", mysql_error(con));
             exit(0);
         }
-        printf("O registo foi efetuado com sucesso. A voltar ao menu...");
+        printf(""Amarelo"O registo foi efetuado com sucesso. A voltar ao menu...");
         sleep(3);
         goto principal;
         break;
     case 3:
         cls();
+        printf(""Amarelo"+---------------+\n");
+        printf("|  "Vermelho"Programador  |\n");
         printf("+---------------+\n");
-        printf("|  Programador  |\n");
-        printf("+---------------+\n");
-        printf("| António Matos |\n");
+        printf("| "Ciano"António Matos "Amarelo"|\n");
         printf("+---------------+\n");
         pressanykey();
         goto principal;
         break;
     case 4:
         cls();
-        printf("A sair do programa...");
-        SetConsoleTitle("A sair do programa...");
+        printf(""Vermelho"A sair do programa...");
+        SetConsoleTitle(""Vermelho"A sair do programa...");
         sleep(3);
         exit(0);
         break;
