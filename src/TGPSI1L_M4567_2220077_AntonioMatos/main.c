@@ -86,8 +86,8 @@ int main()
     MYSQL_ROW row;
     char *server = host;
     char *user = "root";
-    // char *pass = "5603";
-    char *pass = "1589227704";
+    char *pass = "5603";
+    // char *pass = "1589227704";
     char *database = "psi";
     con = mysql_init(NULL);
     if(!mysql_real_connect(con, server, user, pass, database, 0, NULL, 0))
