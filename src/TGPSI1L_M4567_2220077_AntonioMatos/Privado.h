@@ -1,4 +1,4 @@
-#ifndef SrD4rkOficial
+D#ifndef SrD4rkOficial
 #define SrD4rkOficial
 
 //Início dos Imports
