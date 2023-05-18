@@ -1,7 +1,4 @@
-D#ifndef SrD4rkOficial
-#define SrD4rkOficial
-
-//Início dos Imports
+//InÃ­cio dos Imports
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -15,7 +12,7 @@ D#ifndef SrD4rkOficial
 
 //Fim dos Imports
 
-//Início do Código
+//InÃ­cio do CÃ³digo
 
 #define Reset  "\x1B[0m"
 #define Vermelho  "\x1B[31m"
@@ -100,6 +97,6 @@ void loadingfunc()
     sleep(1);
 }
 
-//Fim do Código
+//Fim do CÃ³digo
 
 #endif
